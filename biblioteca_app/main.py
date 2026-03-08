@@ -3,6 +3,22 @@ import sys
 # Importa el módulo os para utilizar funciones del sistema operativo
 import os
 
+"""
+Sistema de Gestión de Biblioteca Digital.
+
+Este programa permite administrar una biblioteca digital utilizando
+Programación Orientada a Objetos (POO) y una arquitectura por capas.
+El sistema gestiona libros, usuarios y préstamos, permitiendo realizar
+operaciones como agregar o eliminar libros, registrar usuarios,
+realizar préstamos y devoluciones, y buscar libros por título,
+autor o categoría.
+
+Para su funcionamiento utiliza diferentes estructuras de datos o colecciones
+como tuplas, listas, diccionarios y conjuntos, organizando la lógica del
+sistema en modelos y servicios, mientras que el archivo main.py se
+encarga de la interacción con el usuario mediante un menú en consola.
+"""
+
 # Agrega la ruta del directorio actual al sistema de búsqueda de módulos
 # Esto permite que Python pueda encontrar correctamente las carpetas "modelos" y "servicios"
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
