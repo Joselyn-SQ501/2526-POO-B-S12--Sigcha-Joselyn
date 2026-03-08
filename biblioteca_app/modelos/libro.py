@@ -7,27 +7,27 @@ class Libro:
         self._categoria = categoria # Atributo privado que guarda la categoría del libro
         self._isbn = isbn # Atributo privado que guarda el código único de identificación para libros y publicaciones monográficas
 
-    # Getter para obtener el título del libro
+    # Método getter para obtener el título del libro
     @property
     def titulo(self) -> str:
         return self._info[0] # posición 0 de la tupla
    
-    # Getter para obtener el autor del libro
+    # Método getter para obtener el autor del libro
     @property
     def autor(self) -> str:
         return self._info[1] # posición 1 de la tupla
 
-    # Getter que devuelve la información de la tupla completa (titulo, autor)
+    # Método getter que devuelve la información de la tupla completa (titulo, autor)
     @property
     def info(self) -> tuple:
         return self._info
 
-    # Getter de la categoría
+    # Método getter de la categoría
     @property
     def categoria(self) -> str:
         return self._categoria
 
-    # Getter del ISBN
+    # Método getter del ISBN
     @property
     def isbn(self) -> str:
         return self._isbn
@@ -41,6 +41,6 @@ class Libro:
             f"     ISBN      : {self.isbn}"
         )
 
-    # Método que devuelve la información del libro depurada
+    # Método que devuelve la información del libro
     def __repr__(self) -> str:
-        return f"Libro(ISBN='{self.isbn}', Título='{self.titulo}', Autor='{self.autor}')"
+        return f"Libro (ISBN='{self.isbn}', Título='{self.titulo}', Autor='{self.autor}')"
