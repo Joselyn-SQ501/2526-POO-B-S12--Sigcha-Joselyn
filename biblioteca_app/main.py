@@ -1,39 +1,54 @@
+# Importa el módulo sys para interactuar con el sistema de Python
 import sys
+# Importa el módulo os para utilizar funciones del sistema operativo
 import os
 
+# Agrega la ruta del directorio actual al sistema de búsqueda de módulos
+# Esto permite que Python pueda encontrar correctamente las carpetas "modelos" y "servicios"
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+# Importa la clase principal que contiene la lógica del sistema de biblioteca
 from servicios.biblioteca_servicio import BibliotecaServicio
 
+# Método que limpia la pantalla de la consola
 def limpiar_pantalla():
+    # Ejecuta el comando de limpieza dependiendo del sistema operativo
     os.system('cls' if os.name == 'nt' else 'clear')
 
-
+# Método que imprime un encabezado decorativo para las secciones del menú
 def imprimir_encabezado(titulo: str):
     print("\n" + "=" * 55)
     print(f"  📚  {titulo}")
     print("=" * 55)
 
-
+# Método que muestra el resultado de una operación (éxito o error)
 def imprimir_resultado(exito: bool, mensaje: str):
+    # Si la operación fue exitosa muestra un check, si no muestra una X
     icono = "✅" if exito else "❌"
+    # Imprime el mensaje junto al icono correspondiente
     print(f"\n  {icono}  {mensaje}")
 
-
+# Método que pausa la ejecución hasta que el usuario presione Enter
 def pausar():
     input("\n  Presiona Enter para continuar...")
 
-
+# Método que muestra una lista de libros en pantalla
 def mostrar_lista_libros(libros: list, etiqueta: str = "Libros encontrados"):
+    # Si la lista está vacía se informa al usuario
     if not libros:
-        print(f"\n  ⚠️  No hay {etiqueta.lower()}.")
+        print(f"\n  ⚠️ No hay {etiqueta.lower()}📚.")
         return
+    # Muestra la etiqueta y el número total de libros encontrados
     print(f"\n  {etiqueta} ({len(libros)}):\n")
+
+    # Bucle que ecorre la lista de libros enumerándolos
     for i, libro in enumerate(libros, 1):
         print(f"  [{i}]")
         print(libro)
         print()
 
+# Menú que gestiona las operaciones relacionadas con libros
 def menu_libros(servicio: BibliotecaServicio):
+    # Bucle infinito que mantiene activo el menú
     while True:
         imprimir_encabezado("GESTIÓN DE LIBROS")
         print("  1. Agregar libro")
@@ -43,18 +58,24 @@ def menu_libros(servicio: BibliotecaServicio):
         print("  0. Volver al menú principal")
         print()
 
+        # Solicita la opción al usuario
         opcion = input("  Selecciona una opción: ").strip()
 
+        # Si el usuario quiere agregar un libro
         if opcion == "1":
             imprimir_encabezado("AGREGAR LIBRO")
+            # Solicita los datos del libro
             titulo    = input("  Título    : ").strip()
             autor     = input("  Autor     : ").strip()
             categoria = input("  Categoría : ").strip()
             isbn      = input("  ISBN      : ").strip()
+            # Llama al servicio para agregar el libro
             exito, msg = servicio.agregar_libro(titulo, autor, categoria, isbn)
+            # Muestra el resultado
             imprimir_resultado(exito, msg)
             pausar()
 
+        # Si el usuario quiere eliminar un libro
         elif opcion == "2":
             imprimir_encabezado("QUITAR LIBRO")
             isbn = input("  ISBN del libro a quitar: ").strip()
@@ -62,25 +83,30 @@ def menu_libros(servicio: BibliotecaServicio):
             imprimir_resultado(exito, msg)
             pausar()
 
+        # Mostrar todos los libros
         elif opcion == "3":
             imprimir_encabezado("TODOS LOS LIBROS")
             libros = servicio.listar_todos_los_libros()
             mostrar_lista_libros(libros, "Libros registrados en el sistema")
             pausar()
 
+        # Mostrar libros disponibles
         elif opcion == "4":
             imprimir_encabezado("LIBROS DISPONIBLES")
             libros = servicio.listar_libros_disponibles()
             mostrar_lista_libros(libros, "Libros disponibles para préstamo")
             pausar()
 
+        # Volver al menú principal
         elif opcion == "0":
             break
+
+        # Si la opción no es válida
         else:
             print("\n  ⚠️  Opción no válida.")
             pausar()
 
-
+# Menú para gestionar los usuarios registrados
 def menu_usuarios(servicio: BibliotecaServicio):
     while True:
         imprimir_encabezado("GESTIÓN DE USUARIOS")
@@ -125,7 +151,7 @@ def menu_usuarios(servicio: BibliotecaServicio):
             print("\n  ⚠️  Opción no válida.")
             pausar()
 
-
+# Menú para gestionar los préstamos y devoluciones de los libros
 def menu_prestamos(servicio: BibliotecaServicio):
     while True:
         imprimir_encabezado("PRÉSTAMOS Y DEVOLUCIONES")
@@ -169,7 +195,7 @@ def menu_prestamos(servicio: BibliotecaServicio):
             print("\n  ⚠️  Opción no válida.")
             pausar()
 
-
+# Menú para gestionar las búsquedas de los libros
 def menu_busquedas(servicio: BibliotecaServicio):
     while True:
         imprimir_encabezado("BÚSQUEDA EN CATÁLOGO")
@@ -205,7 +231,7 @@ def menu_busquedas(servicio: BibliotecaServicio):
             print("\n  ⚠️  Opción no válida.")
             pausar()
 
-
+# Método para cargar datos por defecto o prueba
 def cargar_datos_demo(servicio: BibliotecaServicio):
     servicio.agregar_libro("Cien años de soledad", "Gabriel García Márquez", "Novela", "978-84-376-0494-7")
     servicio.agregar_libro("El Aleph",              "Jorge Luis Borges",      "Cuentos", "978-84-206-5398-2")
@@ -221,28 +247,36 @@ def cargar_datos_demo(servicio: BibliotecaServicio):
     servicio.prestar_libro("978-84-376-0494-7", "USR001")
     servicio.prestar_libro("978-0-452-28423-4", "USR002")
 
-    print("\n  ✅  Datos de demostración cargados correctamente.")
+    print("\n ✅ Datos de demostración cargados correctamente.")
 
+# Función principal del sistema
 def menu_principal():
+    # Crea la instancia del servicio de biblioteca
     servicio = BibliotecaServicio()
 
+    # Muestra el encabezado del sistema
     print("\n" + "=" * 55)
     print("  📚  SISTEMA DE GESTIÓN DE BIBLIOTECA DIGITAL")
-    print("  Desarrollado con arquitectura por capas (POO)")
     print("=" * 55)
+
+    # Pregunta al usuario si desea cargar datos de prueba
     print("\n  ¿Deseas cargar datos de demostración?")
+
     respuesta = input("  (s/n): ").strip().lower()
+
+    # Si responde que sí se cargan libros y usuarios de ejemplo
     if respuesta == "s":
         cargar_datos_demo(servicio)
         pausar()
 
+    # Bucle principal del programa
     while True:
         imprimir_encabezado("MENÚ PRINCIPAL")
-        print("  1. Gestión de Libros")
-        print("  2. Gestión de Usuarios")
-        print("  3. Préstamos y Devoluciones")
-        print("  4. Búsqueda en Catálogo")
-        print("  0. Salir")
+        print(" 📚 1. Gestión de Libros")
+        print(" 👤 2. Gestión de Usuarios")
+        print(" 🔙 3. Préstamos y Devoluciones")
+        print(" 🔎 4. Búsqueda en Catálogo")
+        print(" 🚪 0. Salir")
         print()
 
         opcion = input("  Selecciona una opción: ").strip()
@@ -256,11 +290,13 @@ def menu_principal():
         elif opcion == "4":
             menu_busquedas(servicio)
         elif opcion == "0":
-            print("\n  👋  ¡Hasta luego!\n")
+            # Mensaje de despedida
+            print("\n 👋 ¡Hasta luego! Gracias por usar el Sistema de Gestión de Biblioteca Digital 📚\n")
             break
         else:
-            print("\n  ⚠️  Opción no válida. Intenta de nuevo.")
+            print("\n ⚠️ Opción no válida. Intenta de nuevo.")
             pausar()
 
+# Punto de entrada del programa, que llama a la función main para iniciar el sistema de gestión de biblioteca digital
 if __name__ == "__main__":
     menu_principal()
